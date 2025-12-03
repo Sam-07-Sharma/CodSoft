@@ -1,4 +1,5 @@
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -18,7 +19,8 @@ public class CurrencyConverter {
             double amt = sc.nextDouble();
 
             String strUrl = "https://api.exchangerate-api.com/v4/latest/" + from;
-            URL url = new URL(strUrl);
+            URL url = URI.create(strUrl).toURL();
+            
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
@@ -39,7 +41,7 @@ public class CurrencyConverter {
                 int index = inline.indexOf("\"" + to + "\":");
                 
                 if (index != -1) {
-                    int start = index + to.length() + 3; // skip "TO":
+                    int start = index + to.length() + 3; 
                     int end = inline.indexOf(",", start);
                     
                     if (end == -1) {
@@ -56,6 +58,7 @@ public class CurrencyConverter {
                     System.out.println("Currency not found");
                 }
             }
+            sc.close();
 
         } catch (Exception e) {
             e.printStackTrace();
